@@ -10,7 +10,8 @@ from Box2D import b2RopeJointDef
 
 
 class Ball(ImageSpriteBody, pygame.sprite.Sprite):
-    image = pygame.image.load("data/cosmonaut.png")
+    pass
+    # image = pygame.image.load("data/cosmonaut1.png")
 
 # class Bird1(AnimatedImageSpriteBody):
 #     image = pygame.image.load("data/litle_red_bird.png")
