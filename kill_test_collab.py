@@ -25,38 +25,38 @@ planet_sprites = pygame.sprite.Group()
 one_planet = pygame.image.load(f'data/{planet}.png')
 one_planet = pygame.transform.scale(one_planet, (WIDTH // 1.8, WIDTH // 1.8))
 
-
 # Параметры эллипса
 ellipse_center = [WIDTH // 5.6, HEIGHT // 1.5]
 ellipse_width = WIDTH * 1.6
 ellipse_height = HEIGHT // 1.05
 
-image = pygame.image.load('data/moon.png')
-image = pygame.transform.scale(image, (100, 100))
+# image = pygame.image.load('data/moon.png')
+# image = pygame.transform.scale(image, (100, 100))
 # Угол поворота
 angle = 0
 MYEVENTTYPE = pygame.USEREVENT + 1
 pygame.time.set_timer(MYEVENTTYPE, 12)
 
-
-
 create_bird_event = pygame.USEREVENT + 24
 pygame.time.set_timer(create_bird_event, 10000)
 
-
-
-
 # all_sprites = pygame.sprite.Group()
-angular_speed = 0.01  # Скорость вращения (радианы за кадр)
+angular_speed = 0.000001  # Скорость вращения (радианы за кадр)
 bird_sprites = pygame.sprite.Group()
 clock = pygame.time.Clock()
-people = pygame.image.load('data/11.png')
-# image =
-people = pygame.transform.scale(people, (100, 100))
+
+class Images(pygame.sprite.Sprite):
+    def __init__(self, filename, width, height):
+        pygame.sprite.Sprite.__init__(self)
+        im = pygame.image.load(filename)
+        self.image = pygame.transform.scale(im, (width, height))
+        self.rect = self.image.get_rect()
 
 
+people = Images('data/cosmonaut1.png', 150, 150)
+moon = Images('data/moon.png', 150, 150)
 
-
+all_sprites.add(moon)
 
 # Основной игровой цикл
 flag1 = False
@@ -71,13 +71,13 @@ circleShape.draw = util.my_draw_circle
 center_body = world.CreateStaticBody(
     position=(-40, -20),
     shapes=polygonShape(box=(0.2, 0.2)))
-bird = FlyBird(world, bird_sprites, center_body, people)
+bird = FlyBird(world, bird_sprites, center_body, people.image)
 
 # rect_2 = image.get_rect().center
 # rect_1 = bird.center_body()
 # collide = rect_2.collidepoint(rect_1)
 
-
+collections = 0
 catapult = pygame.image.load('data/catapult.png')
 scale = pygame.transform.scale(
     catapult, (catapult.get_width() // 2,
@@ -87,26 +87,18 @@ screen.blit(scale, scale_rect)
 
 while running:
 
+
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
 
-
         if event.type == MYEVENTTYPE:
             bird_sprites.update()
+
             all_sprites.update()
 
-        # rect_2 = image.get_rect()
-        # # rect_1 = (bird.ball_body.position.x, bird.ball_body.position.y)
-        # rect_1 = one_planet.get_rect()
-        # collide = rect_2.collidepoint(rect_1)
-
-
-        collisions = pygame.sprite.spritecollide(all_sprites, planet_sprites, True)
-        # collections =
-        if collisions:
-            bird.sprite.kill()
 
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and moving == 0:
             moving = 1
@@ -121,9 +113,6 @@ while running:
             world.DestroyJoint(bird.mJoint)
             flag1 = True
 
-        if collide:
-            bird.sprite.kill()
-
 
         if flag1:
             if (bird.ball_body.position.x - bird.center_body.position.x) ** 2 + (
@@ -136,9 +125,6 @@ while running:
     screen.fill((0, 0, 0, 0))
     screen.blit(background_image, (0, 0))
 
-    # Очистка экрана
-    #
-
     # Рисуем эллипс
     pygame.draw.ellipse(screen, WHITE, (
         ellipse_center[0] - ellipse_width // 2, ellipse_center[1] - ellipse_height // 2, ellipse_width, ellipse_height),
@@ -150,7 +136,18 @@ while running:
 
     # Рисуем объект (красный круг) в новых координатах
     # pygame.draw.circle(screen, RED, (int(x), int(y)), 10)
-    screen.blit(image, (x - image.get_width() // 2, y - image.get_height() // 2))
+    # if not collisions:
+    moon.rect.center = x, y
+    print(moon.rect, bird.sprite.rect)
+    coll = bird.sprite.rect.colliderect(moon.rect)
+    print(coll)
+
+    if coll:
+        exit()
+    # #     # screen.blit(moon.image, (x - moon.image.get_width() // 2, y - moon.image.get_height() // 2))
+    #     screen.blit(moon.image, 100, 100)
+
+
     screen.blit(one_planet, (WIDTH * (-0.1), HEIGHT // 2.5))
     # Обновляем угол поворота
     angle += angular_speed
