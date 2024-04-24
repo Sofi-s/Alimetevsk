@@ -5,7 +5,7 @@ from settings import WIDTH, HEIGHT, screen
 from bd import *
 from catapulta import FlyBird
 import catapulta
-from  x import  NewWindow1
+from x import NewWindow1
 try:
     class Background:
         def __init__(self, image_file, width, height):

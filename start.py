@@ -95,8 +95,8 @@ class StartWindow:
                     sys.exit()
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     if button_level_1.pressed(pygame.mouse.get_pos()):
-                        from main import Game
-                        new_window = Game()
+                        # from main import Game
+                        new_window = main1
                         new_window.run()
                         self.background_image()
         #             elif button_level_2.pressed(pygame.mouse.get_pos()):

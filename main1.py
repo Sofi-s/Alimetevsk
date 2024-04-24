@@ -1,8 +1,7 @@
 import pygame
 import sys
 import math
-from Box2D.b2 import world, polygonShape, circleShape
-from Box2D.b2 import world as box2d_world, polygonShape, circleShape, staticBody, dynamicBody
+from Box2D.b2 import world, polygonShape, circleShape, staticBody, dynamicBody
 from catapulta import FlyBird
 from settings import *
 
@@ -15,7 +14,7 @@ pygame.init()
 
 world = world(gravity=(0, -0.5))
 
-pygame.display.set_caption("Вращение объекта по оси эллипса")
+pygame.display.set_caption("Покорение Луны")
 all_sprites = pygame.sprite.Group()  # создаем группу спрайтов
 background_image = pygame.image.load('data/space.jpg')
 background_image = pygame.transform.scale(background_image, (WIDTH, HEIGHT))
@@ -29,9 +28,6 @@ one_planet = pygame.transform.scale(one_planet, (WIDTH // 1.8, WIDTH // 1.8))
 ellipse_center = [WIDTH // 5.6, HEIGHT // 1.5]
 ellipse_width = WIDTH * 1.6
 ellipse_height = HEIGHT // 1.05
-
-# image = pygame.image.load('data/moon.png')
-# image = pygame.transform.scale(image, (100, 100))
 # Угол поворота
 angle = 0
 MYEVENTTYPE = pygame.USEREVENT + 1
@@ -40,10 +36,10 @@ pygame.time.set_timer(MYEVENTTYPE, 12)
 create_bird_event = pygame.USEREVENT + 24
 pygame.time.set_timer(create_bird_event, 10000)
 
-# all_sprites = pygame.sprite.Group()
-angular_speed = 0.000001  # Скорость вращения (радианы за кадр)
+angular_speed = 0.01  # Скорость вращения (радианы за кадр)
 bird_sprites = pygame.sprite.Group()
 clock = pygame.time.Clock()
+
 
 class Images(pygame.sprite.Sprite):
     def __init__(self, filename, width, height):
@@ -74,18 +70,25 @@ center_body = world.CreateStaticBody(
 im = pygame.image.load("data/cosmonaut1.png")
 bird = FlyBird(world, bird_sprites, center_body, pygame.transform.scale(im, (50, 50)))
 
-# rect_2 = image.get_rect().center
-# rect_1 = bird.center_body()
-# collide = rect_2.collidepoint(rect_1)
-
 collections = 0
 catapult = pygame.image.load('data/catapult.png')
 scale = pygame.transform.scale(
     catapult, (catapult.get_width() // 2,
                catapult.get_height() // 2))
 scale_rect = scale.get_rect(center=(world_to_screen((-40, -26))))
-screen.blit(scale, scale_rect)
 
+# start window
+fons = pygame.image.load("data/fons.jfif")
+screen.blit(fons, (0, 0))
+pygame.display.flip()
+
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            running = False
+
+screen.blit(scale, scale_rect)
+running = True
 while running:
 
     for event in pygame.event.get():
@@ -97,7 +100,6 @@ while running:
             bird_sprites.update()
 
             all_sprites.update()
-
 
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and moving == 0:
             moving = 1
@@ -111,7 +113,6 @@ while running:
             world.DestroyJoint(bird.rope)
             world.DestroyJoint(bird.mJoint)
             flag1 = True
-
 
         if flag1:
             if (bird.ball_body.position.x - bird.center_body.position.x) ** 2 + (
@@ -133,18 +134,15 @@ while running:
     x = ellipse_center[0] + ellipse_width // 2 * math.cos(angle)
     y = ellipse_center[1] + ellipse_height // 2 * math.sin(angle)
 
-    # Рисуем объект (красный круг) в новых координатах
-    # pygame.draw.circle(screen, RED, (int(x), int(y)), 10)
-    # if not collisions:
     moon.rect.center = x, y
-    # print(moon.rect, bird.sprite.rect)
     coll = bird.sprite.rect.colliderect(moon.rect)
-    # print(coll)
-
     if coll:
-        exit()
+        fons = pygame.image.load("data/fons.jfif")
+        screen.blit(fons, (0, 0))
+        pygame.display.flip()
+
     print(bird.sprite.rect)
-    if bird.sprite.rect.y < -1000 or bird.sprite.rect.y > 1000:
+    if bird.sprite.rect.y < -1000 or bird.sprite.rect.y > 1000 or bird.sprite.rect.x < -1000 or bird.sprite.rect.x < -1000:
         center_body = world.CreateStaticBody(
             position=(-40, -20),
             shapes=polygonShape(box=(0.2, 0.2)))
@@ -154,7 +152,6 @@ while running:
         bird = FlyBird(world, bird_sprites, center_body, people.image)
     # #     # screen.blit(moon.image, (x - moon.image.get_width() // 2, y - moon.image.get_height() // 2))
     #     screen.blit(moon.image, 100, 100)
-
 
     screen.blit(one_planet, (WIDTH * (-0.1), HEIGHT // 2.5))
     # Обновляем угол поворота
@@ -168,43 +165,23 @@ while running:
     polygonShape.draw = util.my_draw_polygon
     circleShape.draw = util.my_draw_circle
 
-    # center_body = world.CreateStaticBody(
-    #     position=(-40, -20),
-    #     shapes=polygonShape(box=(0.2, 0.2)))
-    #
-    # bird_sprites = pygame.sprite.Group()
-    # # rom catapulta import FlyBird
-    # people = pygame.image.load('data/11.png')
-    # # image =
-    # people = pygame.transform.scale(people, (100, 100))
-    # bird = FlyBird(world, bird_sprites, center_body, people)
-
-    # screen.blit(background_image, (0, 0))
-
-    # catapult = pygame.image.load('data/catapult.png')
-    # scale = pygame.transform.scale(
-    #     catapult, (catapult.get_width() // 2,
-    #                catapult.get_height() // 2))
-    # scale_rect = scale.get_rect(center=(world_to_screen((-40, -26))))
     screen.blit(scale, scale_rect)
 
     if line:
         pygame.draw.line(screen, (53, 23, 12), (world_to_screen((-38, -18))), bird.sprite.rect.center, 8)
         pygame.draw.line(screen, (53, 23, 12), (world_to_screen((-42, -18))), bird.sprite.rect.center, 8)
 
-    # world.Step(TIME_STEP, 10, 10)
-
     world.Step(TIME_STEP, 10, 10)
     all_sprites.update()
     all_sprites.draw(screen)
     bird_sprites.draw(screen)
 
-    # util.draw_bodies(world)
-    # Обновляем экран
     pygame.display.flip()
 
     # Ограничиваем частоту кадров
     clock.tick(60)
+
 # Выход из Pygame
+
 pygame.quit()
 sys.exit()
