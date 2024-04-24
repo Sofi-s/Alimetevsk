@@ -1,16 +1,11 @@
-# from primitives_v2 import Ball
-from functions import *
-
 import pygame
-from settings import screen
 from classes import ImageSpriteBody
-
-from Box2D.b2 import world, polygonShape, circleShape
 from Box2D import b2RopeJointDef
 
 
 class Ball(ImageSpriteBody, pygame.sprite.Sprite):
     pass
+
 
 class FlyBird:
     def __init__(self, world, sprite_group, center_body, image):
@@ -37,5 +32,3 @@ class FlyBird:
             localAnchorB=(0, 0)))
 
         self.sprite = Ball(sprite_group, self.ball_body, img=image)
-
-
