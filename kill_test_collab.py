@@ -53,7 +53,7 @@ class Images(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
 
 
-people = Images('data/cosmonaut1.png', 150, 150)
+people = Images('data/cosmonaut1.png', 60, 60)
 moon = Images('data/moon.png', 150, 150)
 
 all_sprites.add(moon)
@@ -71,7 +71,8 @@ circleShape.draw = util.my_draw_circle
 center_body = world.CreateStaticBody(
     position=(-40, -20),
     shapes=polygonShape(box=(0.2, 0.2)))
-bird = FlyBird(world, bird_sprites, center_body, people.image)
+im = pygame.image.load("data/cosmonaut1.png")
+bird = FlyBird(world, bird_sprites, center_body, pygame.transform.scale(im, (50, 50)))
 
 # rect_2 = image.get_rect().center
 # rect_1 = bird.center_body()

@@ -24,7 +24,7 @@ class SpriteBody(pygame.sprite.Sprite):
 class ImageSpriteBody(SpriteBody):
     image = None
 
-    def __init__(self, group, body, img=None, scale=False):
+    def __init__(self, group, body, img=None, scale=True):
         super().__init__(group, body)
         if img is not None:
             self.init_img = img
