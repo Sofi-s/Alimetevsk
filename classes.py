@@ -1,6 +1,4 @@
-import pygame
 import math
-from bd import  *
 from functions import *
 from Box2D.Box2D import b2CircleShape, b2PolygonShape
 

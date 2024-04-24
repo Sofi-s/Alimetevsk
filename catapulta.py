@@ -1,6 +1,6 @@
 # from primitives_v2 import Ball
 from functions import *
-import util
+
 import pygame
 from settings import screen
 from classes import ImageSpriteBody
