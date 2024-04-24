@@ -84,10 +84,16 @@ pygame.display.flip()
 
 while running:
     for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+
+
         if event.type == pygame.MOUSEBUTTONDOWN:
             running = False
 
 screen.blit(scale, scale_rect)
+
 running = True
 while running:
 
@@ -137,9 +143,7 @@ while running:
     moon.rect.center = x, y
     coll = bird.sprite.rect.colliderect(moon.rect)
     if coll:
-        fons = pygame.image.load("data/fons.jfif")
-        screen.blit(fons, (0, 0))
-        pygame.display.flip()
+        running = False
 
     print(bird.sprite.rect)
     if bird.sprite.rect.y < -1000 or bird.sprite.rect.y > 1000 or bird.sprite.rect.x < -1000 or bird.sprite.rect.x < -1000:
@@ -180,6 +184,21 @@ while running:
 
     # Ограничиваем частоту кадров
     clock.tick(60)
+
+fons = pygame.image.load("data/fons.jfif")
+screen.blit(fons, (0, 0))
+pygame.display.flip()
+running = True
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+
+
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            running = False
+
 
 # Выход из Pygame
 
