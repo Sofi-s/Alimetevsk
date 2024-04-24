@@ -87,8 +87,6 @@ screen.blit(scale, scale_rect)
 
 while running:
 
-
-
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -138,12 +136,21 @@ while running:
     # pygame.draw.circle(screen, RED, (int(x), int(y)), 10)
     # if not collisions:
     moon.rect.center = x, y
-    print(moon.rect, bird.sprite.rect)
+    # print(moon.rect, bird.sprite.rect)
     coll = bird.sprite.rect.colliderect(moon.rect)
-    print(coll)
+    # print(coll)
 
     if coll:
         exit()
+    print(bird.sprite.rect)
+    if bird.sprite.rect.y < -1000 or bird.sprite.rect.y > 1000:
+        center_body = world.CreateStaticBody(
+            position=(-40, -20),
+            shapes=polygonShape(box=(0.2, 0.2)))
+        flag1 = False
+        moving = 0
+        line = True
+        bird = FlyBird(world, bird_sprites, center_body, people.image)
     # #     # screen.blit(moon.image, (x - moon.image.get_width() // 2, y - moon.image.get_height() // 2))
     #     screen.blit(moon.image, 100, 100)
 
