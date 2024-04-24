@@ -13,7 +13,7 @@ background_image = pygame.transform.scale(background_image, (WIDTH, HEIGHT))
 WHITE = (255, 255, 255)
 
 world = pygame.image.load(f'data/{planet}.png')
-world = pygame.transform.scale(world, (WIDTH//1.8, WIDTH//1.8))
+world = pygame.transform.scale(world, (WIDTH // 1.8, WIDTH // 1.8))
 
 # Параметры эллипса
 ellipse_center = [WIDTH // 5.6, HEIGHT // 1.5]
@@ -38,7 +38,6 @@ while running:
     # Очистка экрана
     screen.blit(background_image, (0, 0))
 
-
     # Рисуем эллипс
     pygame.draw.ellipse(screen, WHITE, (
         ellipse_center[0] - ellipse_width // 2, ellipse_center[1] - ellipse_height // 2, ellipse_width, ellipse_height),
@@ -51,7 +50,7 @@ while running:
     # Рисуем объект (красный круг) в новых координатах
     # pygame.draw.circle(screen, RED, (int(x), int(y)), 10)
     screen.blit(image, (x - image.get_width() // 2, y - image.get_height() // 2))
-    screen.blit(world, (WIDTH*(-0.1), HEIGHT//2.5))
+    screen.blit(world, (WIDTH * (-0.1), HEIGHT // 2.5))
     # Обновляем угол поворота
     angle += angular_speed
 

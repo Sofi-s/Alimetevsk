@@ -30,10 +30,10 @@ try:
             self.running = True
 
         def run(self):
-            # while self.running:
-            #     for event in pygame.event.get():
-            #         if event.type == pygame.QUIT:
-            #             self.running = False
+            while self.running:
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        self.running = False
             self.screen.fill((0, 0, 0))
             self.background.draw(self.screen)
             self.ellipse_object.update()

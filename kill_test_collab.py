@@ -21,8 +21,10 @@ background_image = pygame.image.load('data/space.jpg')
 background_image = pygame.transform.scale(background_image, (WIDTH, HEIGHT))
 WHITE = (255, 255, 255)
 
+planet_sprites = pygame.sprite.Group()
 one_planet = pygame.image.load(f'data/{planet}.png')
 one_planet = pygame.transform.scale(one_planet, (WIDTH // 1.8, WIDTH // 1.8))
+
 
 # Параметры эллипса
 ellipse_center = [WIDTH // 5.6, HEIGHT // 1.5]
@@ -36,16 +38,25 @@ angle = 0
 MYEVENTTYPE = pygame.USEREVENT + 1
 pygame.time.set_timer(MYEVENTTYPE, 12)
 
+
+
 create_bird_event = pygame.USEREVENT + 24
 pygame.time.set_timer(create_bird_event, 10000)
 
+
+
+
 # all_sprites = pygame.sprite.Group()
-angular_speed = 0.008  # Скорость вращения (радианы за кадр)
+angular_speed = 0.01  # Скорость вращения (радианы за кадр)
 bird_sprites = pygame.sprite.Group()
 clock = pygame.time.Clock()
 people = pygame.image.load('data/11.png')
 # image =
 people = pygame.transform.scale(people, (100, 100))
+
+
+
+
 
 # Основной игровой цикл
 flag1 = False
@@ -62,6 +73,11 @@ center_body = world.CreateStaticBody(
     shapes=polygonShape(box=(0.2, 0.2)))
 bird = FlyBird(world, bird_sprites, center_body, people)
 
+# rect_2 = image.get_rect().center
+# rect_1 = bird.center_body()
+# collide = rect_2.collidepoint(rect_1)
+
+
 catapult = pygame.image.load('data/catapult.png')
 scale = pygame.transform.scale(
     catapult, (catapult.get_width() // 2,
@@ -76,9 +92,21 @@ while running:
             pygame.quit()
             sys.exit()
 
+
         if event.type == MYEVENTTYPE:
             bird_sprites.update()
             all_sprites.update()
+
+        # rect_2 = image.get_rect()
+        # # rect_1 = (bird.ball_body.position.x, bird.ball_body.position.y)
+        # rect_1 = one_planet.get_rect()
+        # collide = rect_2.collidepoint(rect_1)
+
+
+        collisions = pygame.sprite.spritecollide(all_sprites, planet_sprites, True)
+        # collections =
+        if collisions:
+            bird.sprite.kill()
 
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and moving == 0:
             moving = 1
@@ -92,6 +120,11 @@ while running:
             world.DestroyJoint(bird.rope)
             world.DestroyJoint(bird.mJoint)
             flag1 = True
+
+        if collide:
+            bird.sprite.kill()
+
+
         if flag1:
             if (bird.ball_body.position.x - bird.center_body.position.x) ** 2 + (
                     bird.ball_body.position.y - bird.center_body.position.y) ** 2 < 4:

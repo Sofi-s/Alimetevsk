@@ -12,6 +12,7 @@ class EllipseObject:
         self.angle = 0
         self.angular_speed = 0.008
         self.ellipse_center = [WIDTH // 5.6, HEIGHT // 1.5]
+        self.running = True
         self.ellipse_width = WIDTH * 1.6
         self.ellipse_height = HEIGHT // 1.05
 
@@ -26,4 +27,11 @@ class EllipseObject:
     def draw(self, screen):
         screen.blit(self.image, self.rect)
 
+    def run(self):
+        while self.running:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    self.running = False
 
+
+EllipseObject('data/moon.png', (1000, 1000)).run()

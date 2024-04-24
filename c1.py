@@ -3,8 +3,9 @@ import sys
 
 from functions import screen_to_world, world_to_screen
 # from catapult import Catapult
-from Box2D.b2 import world as box2d_world, polygonShape, circleShape, staticBody, dynamicBody
+# from Box2D.b2 import world as box2d_world, polygonShape, circleShape, staticBody, dynamicBody
 from Box2D.b2 import world, polygonShape, circleShape
+from elips2 import EllipseObject
 import settings
 import util
 from settings import *
@@ -19,10 +20,13 @@ class NewWindow1:
     def __init__(self):
         self.screen = screen
         self.fon = pygame.image.load("data/space.jpg")
+        self.planet = EllipseObject('data/Earth.png', (int(WIDTH / 1.8), int(WIDTH / 1.8)))
+        self.planet.rect.topleft = (WIDTH * -0.1, HEIGHT / 2.5)
         # список для хранения ссылок на спрайты
         self.all_sprites = pygame.sprite.Group()  # создаем группу спрайтов для всех спрайтов
         self.level = 2
         self.c = 0
+        self.running = True
         bar_body = world.CreateStaticBody(position=(29, -28), shapes=polygonShape(box=(20, 1)))
 
     def run(self):
@@ -150,6 +154,7 @@ class NewWindow1:
             all_sprites.update()
             all_sprites.draw(screen)
             bird_sprites.draw(screen)
+            self.planet.draw(self.screen)
             pygame.display.flip()
             # if self.c == 3 and died:
             #     NewWindow2().run2()

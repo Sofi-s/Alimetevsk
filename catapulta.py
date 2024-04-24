@@ -18,7 +18,7 @@ class Ball(ImageSpriteBody, pygame.sprite.Sprite):
 class FlyBird:
     def __init__(self, world, sprite_group, center_body, image):
         self.ball_body = world.CreateDynamicBody(position=(-40, -20))
-        self.ball_body.CreateCircleFixture(radius=3, density=10, friction=0.5, restitution=0)
+        self.ball_body.CreateCircleFixture(radius=3, density=1, friction=0.5, restitution=0)
 
         self.center_body = center_body
 
