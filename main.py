@@ -18,6 +18,9 @@ background_image = pygame.image.load('data/space.jpg')
 background_image = pygame.transform.scale(background_image, (WIDTH, HEIGHT))
 WHITE = (255, 255, 255)
 
+pygame.mixer.music.load('data/musik.mp3')
+pygame.mixer.music.play(-1)
+
 planet_sprites = pygame.sprite.Group()
 one_planet = pygame.image.load(f'data/{planet}.png')
 one_planet = pygame.transform.scale(one_planet, (WIDTH // 1.8, WIDTH // 1.8))
@@ -138,8 +141,7 @@ while running:
     if coll:
         running = False
 
-    print(bird.sprite.rect)
-    if bird.sprite.rect.y < -1000 or bird.sprite.rect.y > 1000 or bird.sprite.rect.x < -1000 or bird.sprite.rect.x < -1000:
+    if bird.sprite.rect.y < - HEIGHT or bird.sprite.rect.y > HEIGHT or bird.sprite.rect.x < - WIDTH or bird.sprite.rect.x > WIDTH:
         center_body = world.CreateStaticBody(
             position=(-40, -20),
             shapes=polygonShape(box=(0.2, 0.2)))
