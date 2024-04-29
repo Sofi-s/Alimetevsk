@@ -22,5 +22,5 @@ def tile(image, w, h):
     return result
 
 
-if __name__ == '__main__':
+if '__name__' == '__main__':
     pass
